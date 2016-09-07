@@ -1,0 +1,32 @@
+
+/*
+ Program Name: PHP call function
+ Description:  Function calls another function by passing two parameters
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+ Version:      1.0.0
+ Tags:         php, parameters 
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+
+<?php
+function diegosfunc($x, $y){
+	calculate($x, $y);
+}
+function calculate($w, $z){
+	$result = $w * $z;
+	echo ("The result is $result");
+}
+?>
+<?php
+diegosfunc(10,10);
+?>
+
+/* 3: Sample run
+-------------------------------------------------------------- */ 
+The result is 100
