@@ -1,0 +1,48 @@
+/*
+ Program Name: PHP loops
+ Description:  For, While & Do While loops
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+ Version:      1.0.0
+ Tags:         php, for, while, do while loop 
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+
+<?php
+echo "For Loop: <br>";
+for( $x=1; $x <= 10; $x++){
+	$value1 = $x; 
+	echo  $value1." "; 
+	}
+echo "<br><br>";
+echo "While Loop: <br>";
+$value1 = 2; 
+while( $value2 <= 10){ 
+	echo $value2." "; 
+	$value2++; 
+}
+echo "<br><br>"; 
+echo "Do While Loop: <br>"; 
+$value3 = 1; 
+do{ 
+	echo $value3." ";
+	$value3 ++; 
+  }
+  while( $value3 <= 10);
+?>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+For Loop: 
+1 2 3 4 5 6 7 8 9 10 
+
+While Loop: 
+1 2 3 4 5 6 7 8 9 10 
+
+Do While Loop: 
+1 2 3 4 5 6 7 8 9 10
