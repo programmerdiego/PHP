@@ -1,0 +1,33 @@
+
+/*
+ Program Name: Do while loos
+ Description:  Simple do while loop
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+ Version:      1.0.0
+ Tags:         php, wnile
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<?php
+$counter = 0;
+do{
+	echo "DIEGO SANCHEZ ";
+	$counter ++;
+}while( $counter < 5);
+?>
+</html>
+
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+Do while Loop: 
+DIEGO SANCHEZ DIEGO SANCHEZ DIEGO SANCHEZ DIEGO SANCHEZ DIEGO SANCHEZ
+
+
+
