@@ -1,0 +1,28 @@
+/*
+ Program Name: add elements to array 
+ Description:  For, While & Do While loops
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<?php
+$myArray=array("mr","diego","sanchez");
+array_unshift($myArray,"START");
+array_push($myArray, "END");
+echo("$myArray[0]");
+echo("$myArray[1]");
+echo("$myArray[2]");
+echo("$myArray[3]");
+echo("$myArray[4]");
+?>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+STARTmrdiegosanchezEND
