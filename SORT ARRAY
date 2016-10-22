@@ -1,0 +1,26 @@
+/*
+ Program Name: sort array 
+ Description:  sort elements of an array 
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<?php
+$myArray=array("8","4","1","7","5");
+sort($myArray);
+foreach($myArray as $value){
+	echo("$value");
+}
+?>
+</html>
+
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+14578
