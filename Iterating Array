@@ -1,0 +1,38 @@
+/*
+ Program Name: Iterating Array 
+ Description:  Iterating an array.
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<?php
+$myArray=array("0","1","2"); //creates the array with values
+echo"The values in the array are: ('0','1','2')<br><br>";
+foreach($myArray as $key=>$v){   //assigns array myArray's key to $key and myArray's value to $value
+	echo"The number ".$key." element: <br>";
+	echo "the key is:".$key.", ";
+	echo "and value is: ".$v."<br><br><br>";
+}
+?>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+The values in the array are: ('0','1','2')
+
+The number 0 element: 
+the key is:0, and value is: 0
+
+
+The number 1 element: 
+the key is:1, and value is: 1
+
+
+The number 2 element: 
+the key is:2, and value is: 2
