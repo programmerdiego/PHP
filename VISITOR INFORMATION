@@ -1,0 +1,29 @@
+/*
+ Program Name: Visitor Information 
+ Description:  Gets browaser and IP address
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<?php 
+$browser = $_SERVER["HTTP_USER_AGENT"]; 
+$address = $_SERVER["REMOTE_ADDR"];
+echo "$browser";   
+echo "<br>";
+echo "$address";
+?>     
+</body>
+</html>
+
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36
+::1
