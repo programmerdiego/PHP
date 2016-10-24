@@ -1,0 +1,29 @@
+/*
+ Program Name: String manipulation
+ Description:  string manipulation
+ Author:       Diego Sanchez
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<?php  
+$string="  Diego Sanchez  ";
+echo strlen( $string );
+echo "<br>";
+echo strtoupper($string);
+echo "<br>";
+echo strtolower($string);
+?>
+</body>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+17
+DIEGO SANCHEZ 
+diego sanchez
