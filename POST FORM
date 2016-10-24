@@ -1,0 +1,30 @@
+/*
+ Program Name: Post form
+ Description:  Post form
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+ Version:      1.0.0
+ Tags:         php, wnile
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<form action="hello2.php "  method="post">
+<input type="text"  name="information">
+</form>
+<?php  
+$myData = $_GET[ information ];
+echo ("You have inputted: ".$myData);	
+?>
+</body>
+</html>
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+
+
+You have inputted: DIEGO
