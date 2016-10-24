@@ -1,0 +1,28 @@
+/*
+ Program Name: Cookie 
+ Description:  File A leaves a cookie on file B
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Method 2
+     3: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<?php   // in a.php
+setcookie("color", "red cookie");  
+header("location: b.php");  
+?>
+
+/* 2: Method 2
+-------------------------------------------------------------- */ 
+<?php   // in b.php
+$mycolor = $_COOKIE["color"];   
+echo  $mycolor;
+?>   
+
+/* 3: Sample run
+-------------------------------------------------------------- */ 
+red cookie
