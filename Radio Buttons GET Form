@@ -1,0 +1,36 @@
+/*
+ Program Name: Radio buttons get form 
+ Description:  Choose favorite color
+ Author:       Diego Sanchez
+  Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<p>Please select your favorite color</p>
+<form method="get">
+<input type="radio"  name="color" value="Red">Red<br>
+<input type="radio"  name="color" value="Yellow">Yellow<br>
+<input type="radio"  name="color" value="Green">Green<br><br>
+<input type="submit"  value="Submit">
+</form>
+</html>
+<?php
+echo "You Selected: ";
+$favorite = $_GET['color'];
+echo($favorite);
+?>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+Please select your favorite color
+
+Red
+Yellow
+Green
+
+Submit
+You Selected: Yellow
