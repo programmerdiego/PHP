@@ -1,0 +1,32 @@
+/*
+ Program Name: Date time
+ Description:  Echo date and time
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+ Version:      1.0.0
+ Tags:         php, date, time
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<?php  
+$date = date("M  d  Y ");
+$hour = date( "h : i : s ");
+$week = date("D  H  A ");
+echo $date;
+echo "<br>";
+echo $hour;
+echo "<br>";
+echo $week;
+?>
+</body>
+</html>
+-------------------------------------------------------------- */ 
+
+
+You have inputted: DIEGO
