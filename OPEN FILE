@@ -1,0 +1,30 @@
+/*
+ Program Name: Open file
+ Description:  Opens a txt file on the browser
+ Author:       Diego Sanchez
+]
+ Structure:
+		 1: Main method
+		 2: File.txt
+     3: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<?php 
+$filename = "file.txt";
+$openfile = fopen( $filename, r );
+$content = fread( $openfile, 100 );
+echo "$content";    
+?>     
+</html>
+
+/* 2: File.txt
+-------------------------------------------------------------- */ 
+Diego Sanchez...this content gets posted online by php
+
+/* 3: Sample run
+-------------------------------------------------------------- */ 
+Do while Loop: 
+DIEGO SANCHEZ DIEGO SANCHEZ DIEGO SANCHEZ DIEGO SANCHEZ DIEGO SANCHEZ
