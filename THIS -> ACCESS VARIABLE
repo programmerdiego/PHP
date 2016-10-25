@@ -1,0 +1,30 @@
+/*
+ Program Name: This -> 
+ Description:  Create a class, an object and access the variable 
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<?php
+class color{        //class definition
+var $c = "This is my variable";
+function brightness() {
+	echo $this->c;     //$this represents $obj
+	}
+}
+$obj= new color();    //create an object
+$obj->brightness();
+?>    
+</html>
+
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+
+This is my variable
