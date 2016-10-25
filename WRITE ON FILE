@@ -1,0 +1,30 @@
+/*
+ Program Name: Write file
+ Description:  Opens a txt file on the browser and writes on it
+ Author:       Diego Sanchez
+]
+ Structure:
+		 1: Main method
+		 2: File.txt
+     3: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<?php 
+$filename = "file.txt";
+$openfile = fopen( $filename, w );
+$content = fwrite( $openfile, "This text is new");   
+?>     
+</html>
+
+</html>
+
+/* 2: File.txt
+-------------------------------------------------------------- */ 
+
+
+/* 3: Sample run
+-------------------------------------------------------------- */ 
+This text is new
