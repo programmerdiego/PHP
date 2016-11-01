@@ -1,0 +1,34 @@
+/*
+ Program Name: Inheritance
+ Description:  Extend class
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<?php
+class mall{
+var $coupon;
+	function shop( ) {
+	echo "The shooping is good";
+	}
+}
+class store extends mall{
+	}
+	$x = new store( );
+	$x->coupon = "big";
+	echo "The mall is ".$x->coupon."<br>";
+	$x->shop( );
+?>
+</body>
+</html>
+-------------------------------------------------------------- */ 
+The mall is big
+The shooping is good
