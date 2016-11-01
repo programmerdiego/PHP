@@ -1,0 +1,33 @@
+/*
+ Program Name: Constructor
+ Description:  Variable is called in class
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+ Version:      1.0.0
+ 
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<?php
+class food{
+	var $x1;
+	var $x2;
+	function food ($arg ) {  // This is a constructor
+		$this->x1= $arg;  
+		echo $this->x1;
+	}  
+}
+$obj= new food( rice );
+?>
+</body>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+rice
