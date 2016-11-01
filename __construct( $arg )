@@ -1,0 +1,36 @@
+/*
+ Program Name: Construct
+ Description:  Passing two args 
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<?php
+class food{
+var $x1;
+var $x2;
+function __construct( $arg,$arg2 ) {  
+$this->x1= $arg;
+$this->x2= $arg2; 
+echo $this->x1;
+echo ("<br>");
+echo $this->x2;
+}  
+}
+$obj= new food( red,apple );
+?>
+</body>
+</html>
+
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+red
+apple
