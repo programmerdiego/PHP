@@ -1,0 +1,32 @@
+/*
+ Program Name: This
+ Description:  Variable is called in class
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+ Version:      1.0.0
+ 
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<?php
+class food{ 
+	var $x = "I like apples";
+		function snacks() {
+			echo $this->x;     
+		}
+}
+$obj= new food();  
+$obj->snacks();
+?> 
+</body>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+I like apples
