@@ -1,0 +1,35 @@
+/*
+ Program Name: Class:: method ( )   
+ Description:  :: calls a function directly
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<body>
+<?php
+class one{
+	function diego( ) {
+	echo "Diego is my first name <br>";
+	}
+}
+class two extends one{
+	function sanchez(){
+	one :: diego( );
+	echo "Sanchez is my last name <br>";
+	}
+}
+two :: sanchez( );
+?>
+</body>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+Diego is my first name 
+Sanchez is my last name 
