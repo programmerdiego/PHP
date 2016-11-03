@@ -1,0 +1,43 @@
+/*
+ Program Name: Construct function
+ Description:  Construct function is called
+ Author:       Diego Sanchez
+ Author URL:   http://diegosanchez.com
+ Version:      1.0.0
+ 
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<?php
+class setDate{
+	var $day;
+	var $month;
+	var $year;
+		function __construct($m,$d,$y){
+			$this->month=$m;
+			$this->day=$d;
+			$this->year=$y;
+			echo "The Constructor function is called...<br><br>";
+			echo " Today's date is: ".$this->month."/".$this->day."/".$this->year;
+			echo "<br><br>";
+		}
+		function __destruct(){
+			echo "The De-constructor function is called...";
+		}
+}
+$obj = new setDate("11","3","2016");  
+ ?>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+The Constructor function is called...
+
+Today's date is: 11/3/2016
+
+The De-constructor function is called...
