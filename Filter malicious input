@@ -1,0 +1,34 @@
+/*
+ Program Name: Filter password 
+ Description:  Filter malicious input through switch case
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+     2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<form action="" method="post">
+<input type="text" name="characters" />
+</form>
+<?php
+$clean = array( );
+$text=$_POST[characters];
+switch ($text){
+case "malware":
+$clean["characters"]=str_replace("malware", "malicious", $text); break; 
+case "@": 
+$clean["characters"]= str_replace("@", "(at)", $text); break;
+case "%":  
+$clean["characters"]= str_replace("%", "percent", $text); break;
+}
+echo $clean["characters"];
+?>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+passwordwith456
