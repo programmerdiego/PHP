@@ -1,0 +1,28 @@
+/*
+ Program Name: Limited input 
+ Description:  Checks to see if the word is in the array
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+     2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<form action="welcome" method="post">
+<input type="text" name="words" />
+</form>
+<?php
+$clean = array( );    // define an array
+$myarray = array( "diego", "Rose", "Andy", "Judy", "Tomy" );
+if ( in_array( $_POST["words"],  $myarray ) ){ //checks to see if the word is in the array
+$clean["words"] = $_POST["words"]; // stores the words
+}
+echo $clean["words"];
+?>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+diego
