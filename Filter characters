@@ -1,0 +1,27 @@
+/*
+ Program Name: Filter characters
+ Description:  Only accepts a-z 
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+     2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<html>
+<form action="welcome" method="post">
+<input type="text" name="characters" >
+</form>
+<?php
+$clean = array( );         // defines an array 
+if ( ctype_alpha ( $_POST["characters"])) //only allows a to z characters
+$clean ["characters"] = $_POST["characters"];  // stores characters only
+echo $clean ["characters"];  //prints displays 
+?>
+</html>
+
+/* 2: Sample run
+-------------------------------------------------------------- */ 
+diego
