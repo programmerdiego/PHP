@@ -1,0 +1,26 @@
+/*
+ Program Name: CLASS AND OBJECT  
+ Description:  New object is created
+ Author:       Diego Sanchez
+ Version:      1.0.
+ Structure:
+		 1: Main method
+		 2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+<?php 
+class diego{ // class definition 
+	var $x = "Diego Sanchez"; 
+	function sanchez() { 
+	echo $this-> x; // $ this represents $ obj 
+	} 
+} 
+$obj = new diego(); 
+$obj->sanchez();
+?>
+
+/* 2: Sample run
+-------------------------------------------------------------- */
+Diego Sanchez
