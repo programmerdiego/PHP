@@ -1,0 +1,60 @@
+/*
+Program Name: Check PHP version 
+Description:  Checks localhost for latest version of PHP
+Instructions:  Create a php file and name it index.php - then place in the "hdocs" folder for XAMPP or the "www" folder for WAMP
+Author:       Diego Sanchez
+Version:      1.0.
+Structure:
+/*     1: Main method
+   	   2: Sample run
+*/
+
+/* 1: Main Method
+-------------------------------------------------------------- */
+
+<?php
+phpinfo();
+?>
+ 
+/* 2: Sample Run
+-------------------------------------------------------------- */
+ 
+PHP Version 7.1.9
+System 
+Windows NT PFP-0999 10.0 build 15063 (Windows 10) i586 
+Build Date 
+Aug 30 2017 18:33:21 
+Compiler 
+MSVC14 (Visual C++ 2015) 
+Architecture 
+x86 
+Configure Command 
+cscript /nologo configure.js "--enable-snapshot-build" "--enable-debug-pack" "--with-pdo-oci=c:\php-snap-build\deps_aux\oracle\x86\instantclient_12_1\sdk,shared" "--with-oci8-12c=c:\php-snap-build\deps_aux\oracle\x86\instantclient_12_1\sdk,shared" "--enable-object-out-dir=../obj/" "--enable-com-dotnet=shared" "--with-mcrypt=static" "--without-analyzer" "--with-pgo" 
+Server API 
+Apache 2.0 Handler 
+Virtual Directory Support 
+enabled 
+Configuration File (php.ini) Path 
+C:\WINDOWS 
+Loaded Configuration File 
+C:\xampp\php\php.ini 
+Scan this dir for additional .ini files 
+(none) 
+Additional .ini files parsed 
+(none) 
+PHP API 
+20160303 
+PHP Extension 
+20160303 
+Zend Extension 
+320160303 
+Zend Extension Build 
+API320160303,TS,VC14 
+PHP Extension Build 
+API20160303,TS,VC14 
+Debug Build 
+no 
+Thread Safety 
+enabled 
+Zend Signal Handling 
+disabled 
