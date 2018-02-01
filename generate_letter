@@ -1,0 +1,1284 @@
+<?php
+
+// Program Documentation Header
+
+//
+
+// Program Name:
+
+//
+
+// Purpose:					Letter
+
+//
+
+// Created By:            Diego Sanchez                   On:	January 19, 2018
+
+//
+
+// Includes
+
+//
+
+// Output
+
+//
+
+// Needed Files:
+
+//
+
+// Changes:
+
+// Purpose					By:				On
+
+
+
+
+
+require_once ('../letter_filestructure_includes.inc.php');
+
+$myfs = new FileStructure();
+
+
+
+$this_includes = $myfs->custcare_root . "/mydb.class.php";
+
+require_once($this_includes);
+
+$mysqli = new MyDb();
+
+
+
+$dev_or_prod = dev_or_prod($mysqli);
+
+$dev_custcare_wrap_or_custcare_wrap = dev_custcare_wrap_or_custcare_wrap($dev_or_prod);
+
+
+
+$http_address = get_http_address();
+
+
+
+$parent_orientation_certificate_letter_choice = strtolower($_REQUEST['parent_orientation_certificate_letter_choice']);
+
+
+
+$choice = strtolower($_REQUEST['parent_orientation_certificate_letter_choice']);
+
+
+
+$familyid = $_REQUEST['familyid'];
+
+$caseid = $_REQUEST['caseid'];
+
+include ('../User.class.php');
+
+$str_myuser = $_REQUEST['str_myuser'];
+
+$myUser = u_create_myuser_from_str($str_myuser);
+
+$this_user = $myUser->fname . " " . $myUser->lname;
+
+$this_user_with_underscore = preg_replace('/ /', '_', $this_user);
+
+
+
+if ($parent_orientation_certificate_letter_choice == "previous") {
+
+	$location =  $http_address . "/" . $dev_custcare_wrap_or_custcare_wrap .
+
+		"/choose.php?choice=showone&familyid=$familyid&caseid=$caseid&str_myuser=$str_myuser";
+
+	header($location);
+
+}
+
+
+
+include ('make_database_entries.inc.php');
+
+
+
+include ('write_banner.inc.php');
+
+
+
+if (!$choice) { $choice = $_REQUEST['choice']; }
+
+
+
+function dayofyear ()
+
+{
+
+	include ('../utConnection.inc.php');  // creates $con variable for mysqli_  syntax
+
+	$query = "SELECT dayofyear(now()) as dayofyear";
+
+	$result = mysqli_query($con, $query) or die ("Error in insert query $query " . mysqli_error($con) );
+
+	while ($row = mysqli_fetch_object($result)) {
+
+   	   return $dayofyear = $row->dayofyear;
+
+   }
+
+}
+
+
+
+
+
+if ($choice == "print")  {
+
+
+
+	$familyid = $_REQUEST['familyid'];
+
+	$caseid = $_REQUEST['caseid'];
+
+	$service_rep = preg_replace('/_/', ' ', $this_user_with_underscore);
+
+	$letter_dt = $_REQUEST['letter_dt'];
+
+	$when_dt = $_REQUEST['when_dt'];
+
+	$participant_name = ucwords(strtolower($_REQUEST['participant_name']));
+
+	$participant_address = ucwords(strtolower($_REQUEST['participant_address']));
+
+	$participant_citystatezip = $_REQUEST['participant_citystatezip'];
+
+	$letter_dt = $_REQUEST['letter_dt'];
+
+	$program = $_REQUEST['program'];
+
+	$time = $_REQUEST['time'];
+
+	$place = $_REQUEST['place'];
+
+	$note = $_REQUEST['note'];
+
+	$child_name = $_REQUEST['child_name'];
+
+	$county = $_REQUEST['county'];
+
+	$choice_count = 0;
+
+	$providerid_dropdown = $_REQUEST['providerid_dropdown'];
+
+	$providerid = $_REQUEST['providerid'];
+
+	$letterheadChoice = strtolower($_REQUEST['letterheadChoice']);
+
+	
+
+    $when_dt_yyyymd = reformatdate_mdyyyy_to_yyyymd($when_dt);
+
+	$query = "SELECT DATE_ADD('" . $when_dt_yyyymd . "', INTERVAL 1 DAY)";
+
+	$t = $mysqli->querySingleItem("$query");
+
+	
+
+	if ($providerid) {
+
+		$providerid_dropdown = $providerid;
+
+	}
+
+
+
+
+
+if ($providerid_dropdown) {
+
+$query = "SELECT *, length(mailing_zip) as length_mailing_zip, length(zip) as length_zip FROM cpc.cpc_licensed WHERE njck = $providerid_dropdown AND delete_flag <> 'Y'  AND abbott_slots > 0 AND cpc_status = 'A' ";
+
+	if ($result = $mysqli->queryObjectArray("$query")) {
+
+		foreach ($result as $row) {
+
+			$provider_name = $row->business_name;
+
+			if ($row->mailing_address) {
+
+				$provider_address = $row->mailing_address;
+
+				if ( ($row->length_mailing_zip > 1) AND ($row->length_mailing_zip < 5) )  {
+
+					$provider_citystatezip = $row->mailing_city . ", " . $row->mailing_state . "  0" . $row->mailing_zip;
+
+				}
+
+				elseif ($row->length_zip >= 5)  { $provider_citystatezip = $row->mailing_city . ", " . $row->mailing_state
+
+					. "  " . $row->mailing_zip; }
+
+				else { $provider_citystatezip = $row->mailing_city . ", " . $row->mailing_state ; }
+
+			}
+
+			else {
+
+				$provider_address = $row->address;
+
+				if ( ($row->length_zip > 1) AND ($row->length_zip < 5) )  {
+
+					$provider_citystatezip = ucwords(strtolower(trim_it($row->city))) . ", " . $row->state . "  0" . $row->_zip;
+
+				}
+
+				elseif ($row->length_zip >= 5)  { $provider_citystatezip = trim_it($row->city) . ", " . $row->state . "  " . $row->zip; }
+
+				else { $provider_citystatezip = ucwords(strtolower(trim_it($row->city))) . ", " . $row->state ; }
+
+			}
+
+		}
+
+	}
+
+}  //end if providerid dropdown
+
+
+
+	$general_paragraph = "<fontname=Helvetica-Bold encoding=host> Title <resetfont>";
+
+	$general_paragraph2 = "<fontname=Helvetica-Bold encoding=host> Title two <resetfont>";
+
+	$general_paragraph3 = "<fontname=Helvetica-Bold encoding=host>                              *****************************************************************************<resetfont>";
+
+
+
+	
+
+	$general_paragraph4 = "By signing, on ________________________________ ";
+
+	$general_paragraph5 = "(Date)";
+
+	$general_paragraph6 = "I received Services, including: <fontname=Helvetica-Bold encoding=host> Hearing Process.<resetfont>";
+
+	$general_paragraph66 = "I was included with my packet.";
+
+	
+
+	$general_paragraph7 = "Parent/Applicant Name: _____________________________________________________________";
+
+	$general_paragraph8 = "Parent/Applicant Signature: __________________________________________________________";
+
+	$general_paragraph9 = "Date: _______________________________________________";
+
+	
+
+	
+
+	$letter_type = "parent_orientation_certificate";
+
+	$document_name = make_database_entry($mysqli, $caseid, $familyid, $participant_name, $participant_address,
+
+	$participant_citystatezip, $provider_name, $provider_address, $provider_citystatezip, $myUser, $letter_type);
+
+
+
+	write_to_disk ($document_name, $familyid, $caseid, $myUser, $letter_dt,
+
+ 	$participant_name, $participant_address, $participant_citystatezip,
+
+ 	$letter_dt, $when_dt, $program, $time, $place, $note, 
+
+	$child_name, $general_paragraph,
+
+
+
+	$general_paragraph2, $general_paragraph3, $general_paragraph4, $general_paragraph5, $general_paragraph6,
+
+	$general_paragraph66, $general_paragraph7, $general_paragraph8, $general_paragraph9, $general_paragraph10,
+
+	
+
+ 	$ineligible_flag, $ineligible_reason1, $ineligible_reason2,  $ineligible_reason3, $ineligible_reason4,
+
+ 	$ineligible_reason5, $ineligible_reason6,  $ineligible_reason7, $ineligible_reason8,
+
+ 	$ineligible_reason9, $ineligible_reason10, $ineligible_reason11, $ineligible_para1,
+
+ 	$ineligible_para2,  $ineligible_para3,  $ineligible_para4,  $ineligible_para5,
+
+ 	$ineligible_para6,  $ineligible_para7,  $ineligible_para8,  $ineligible_para9,
+
+ 	$ineligible_para10,  $ineligible_para11, $other_reason, $providerid, $provider_name, $provider_address, $provider_citystatezip,
+
+ 	$letterheadChoice, $stmt, $mysqli);
+
+
+
+		if ($document_name) {
+
+$http_address = preg_replace('/Location: /i', '', $http_address);
+
+$location = $http_address . "/" . $dev_custcare_wrap_or_custcare_wrap . "/letters_sent/" . $document_name;
+
+echo <<<bannerx
+
+<p style=color:black;font-size:25px;margin-left:10em;>The and Processing</p>
+
+<p style=margin-left:10em;><img src="../../icons/sherlock.jpg">&nbsp;&nbsp;The System (S...)
+
+&nbsp;&nbsp;<img src="../../icons/pfplogo_mini.jpg" height=40 width=80></p>
+
+<p>($dev_or_prod)</p>
+
+<HR>
+
+bannerx;
+
+echo "<p style=margin-top:3em;>&nbsp;</p>";
+
+echo "<p style=color:black;font-size:1.0em;margin-left:8em;font-style:small-caps;>The Letter for $participant_name has been saved to the disk.</p><br>";  
+
+echo "<p style=color:black;font-size:1.0em;margin-left:8em;font-style:small-caps;><a href=$location>Click to view and print.</a><br><br></p>";
+
+echo "<p style=color:black;font-size:1.0em;margin-left:8em;>Press the back button when finished or <a href=../choose.php?choice=showone&familyid=$familyid&caseid=$caseid&str_myuser=$str_myuser>Return to the client screen.</a></p>";
+
+	}
+
+
+
+}  // end choice = print
+
+
+
+function write_to_disk ($document_name, $familyid, $caseid, $myUser, $letter_dt,
+
+	$participant_name, $participant_address, $participant_citystatezip,
+
+	$letter_dt, $when_dt, $program, $time, $place, $note, 	
+
+	$child_name, $general_paragraph,
+
+	$general_paragraph2, $general_paragraph3, $general_paragraph4, $general_paragraph5, $general_paragraph6,
+
+	$general_paragraph66, $general_paragraph7, $general_paragraph8, $general_paragraph9, $general_paragraph10,
+
+	$ineligible_flag, $ineligible_reason1, $ineligible_reason2,  $ineligible_reason3, $ineligible_reason4,
+
+	$ineligible_reason5, $ineligible_reason6,  $ineligible_reason7, $ineligible_reason8,
+
+	$ineligible_reason9, $ineligible_reason10,	$ineligible_reason11, $ineligible_para1,
+
+	$ineligible_para2,  $ineligible_para3,  $ineligible_para4,  $ineligible_para5,
+
+	$ineligible_para6,  $ineligible_para7,  $ineligible_para8,  $ineligible_para9,
+
+	$ineligible_para10,  $ineligible_para11, $other_reason, $providerid, $provider_name, $provider_address, $provider_citystatezip,
+
+	$letterheadChoice, $stmt, $mysqli)
+
+{
+
+
+
+$document_name = $document_name;
+
+$familyid = $familyid;
+
+$caseid = $caseid;
+
+$service_rep = $myUser->fname . " " . $myUser->lname;
+
+
+
+
+
+try {
+
+    $p = new PDFlib();
+
+	$p->set_parameter("license","X600605-009100-410AD7-E350A6");
+
+    # This means we must check return values of load_font() etc.
+
+  //  $p->set_parameter("errorpolicy", "return");
+
+
+
+    // This line is required to avoid problems on Japanese systems
+
+    $p->set_parameter("hypertextencoding", "winansi");
+
+
+
+    //   open new PDF file; insert a file name to create the PDF on disk
+
+    if ($p->begin_document("e://wamp/www/custcare_wrap/letters_sent/$document_name", "") == 0) {
+
+		die("Error: " . $p->get_errmsg());
+
+    }
+
+
+
+    $p->set_info("Creator", "parent_letter.php");
+
+    $p->set_info("Author", "$myUser->username");
+
+    $p->set_info("Title", "Parent Letter ");
+
+
+
+ 	$font = $p->load_font("Arial", "winansi", "");
+
+
+
+ 	$boldfont = $p->load_font("Arial Bold", "winansi", "");
+
+	    if ($boldfont == 0) {
+
+		die("Error: " . $p->get_errmsg($p));
+
+	}
+
+
+
+	$basic_font_size = 12;
+
+	$date_font_size = 11.0;
+
+	$under_font_size = 8.0;
+
+	$certificate_font_size = 13.5;
+
+ 	$p->begin_page_ext(595, 842, "");
+
+	$anchor_start_y = 842;
+
+ 	$p->setfont($font, $basic_font_size);
+
+
+
+	if ($letterheadChoice=='n') {
+
+	 	require_once 'utPFPLogoAndAddress.inc.php';
+
+	}
+
+
+
+ 	$start_x = 50;
+
+	$start_x = 30;
+
+ 	$start_y = 800;
+
+ 	$lead_amount = 10;
+
+ 	$tight_lead_amount = $lead_amount - 4;
+
+ 	$p->setfont($font, $basic_font_size);
+
+ 	$texty = 650;
+
+ 	$p->set_text_pos($start_x, $texty);
+
+	
+
+	//general paragraph
+
+	$texty = $p->get_value("texty", 0) - 22;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $certificate_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph",  "fontname=Arial fontsize=$certificate_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x + 222, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+	
+
+	//general paragraph2
+
+	$texty = $p->get_value("texty", 0) - 11;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $certificate_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph2",  "fontname=Arial fontsize=$certificate_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x + 200, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+	
+
+	
+
+	//general paragraph3
+
+	$texty = $p->get_value("texty", 0) - 11;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $basic_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph3",  "fontname=Arial fontsize=$basic_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+
+
+	
+
+	$texty = $p->get_value("texty", 0) - 44;
+
+	$p->set_text_pos($start_x, $texty);
+
+ 	$p->show("Name:       $participant_name");
+
+ 
+
+ 	// new line now down by lead_amount
+
+	$texty = $p->get_value("texty", 0) - 11;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->show("Address:   $participant_address");
+
+	
+
+	$texty = $p->get_value("texty", 0) - 11;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->show("                  $participant_citystatezip");
+
+
+
+	$familyandcaseids = $familyid . "/" . $caseid;
+
+	$texty = $p->get_value("texty", 0) - 16;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->show("Family ID:  $familyandcaseids");
+
+    
+
+	// $texty = $p->get_value("texty", 0) - 22;
+
+	// $p->set_text_pos($start_x, $texty);
+
+	// original: 	$p->show("Child: ");
+
+
+
+	//$texty = $p->get_value("texty", 0) - 22;
+
+	//$p->set_text_pos($start_x + 300 , $texty );
+
+	//$p->show("Program: $program");
+
+		
+
+	//general paragraph4
+
+	$texty = $p->get_value("texty", 0) - 33;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $basic_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph4",  "fontname=Arial fontsize=$basic_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+
+
+	//general paragraph5
+
+	$texty = $p->get_value("texty", 0) - 2;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $under_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph5",  "fontname=Arial fontsize=$under_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x + 225, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+	
+
+	
+
+	//general date
+
+	$texty = $p->get_value("texty", 0) + 19;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $date_font_size);
+
+	$textflow = $p->create_textflow("$when_dt",  "fontname=Arial fontsize=$date_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x + 220, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+	
+
+	//general paragraph6
+
+	$texty = $p->get_value("texty", 0) - 16;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $basic_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph6",  "fontname=Arial fontsize=$basic_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+
+
+	//general paragraph66
+
+	$texty = $p->get_value("texty", 0) - 16;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $basic_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph66",  "fontname=Arial fontsize=$basic_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+	
+
+	//general paragraph7
+
+	$texty = $p->get_value("texty", 0) - 22;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $basic_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph7",  "fontname=Arial fontsize=$basic_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+
+
+	
+
+	//general paragraph8
+
+	$texty = $p->get_value("texty", 0) - 22;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $basic_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph8",  "fontname=Arial fontsize=$basic_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+
+
+	
+
+	//general paragraph9
+
+	$texty = $p->get_value("texty", 0) - 22;
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->setfont($font, $basic_font_size);
+
+	$textflow = $p->create_textflow("$general_paragraph9",  "fontname=Arial fontsize=$basic_font_size encoding=winansi");
+
+
+
+     if ($textflow == 0){
+
+	  die("Error: " . $p->get_errmsg());
+
+     }
+
+    $p->fit_textflow($textflow, $start_x, $texty, $start_x + 550, $texty - ($lead_amount * 10), "");
+
+
+
+
+
+
+
+	//$texty = $p->get_value("texty", 0) - 44;
+
+	
+
+	
+
+	$texty = $p->get_value("texty", 0) - 11;
+
+	$p->setfont($font, $basic_font_size);
+
+	$p->set_text_pos($start_x+10, $texty);
+
+	$p->show("$provider_address");
+
+	$texty = $p->get_value("texty", 0) - 11;
+
+	$p->setfont($font, $basic_font_size);
+
+	$p->set_text_pos($start_x+10, $texty);
+
+	$p->show("$provider_citystatezip");
+
+
+
+	$texty = 50;
+
+	$p->setfont($font, $under_font_size-2);
+
+	$p->set_text_pos($start_x, $texty);
+
+	$p->show("(Letter ID#: $document_name)");
+
+
+
+ 	$p->end_page_ext("");
+
+
+
+
+
+ // put in envelope
+
+
+
+ 	$env_height = (842*4.25)/11;
+
+	$env_width = (595*9)/8.5;
+
+ 	$p->begin_page_ext( $env_width, $env_height, "");
+
+	$start_x = 30;
+
+ 	$texty = 150;
+
+ 	// put in sender's code
+
+ 	$p->set_text_pos(45, 230);
+
+ 	$t = $basic_font_size - 2;
+
+ 	$p->setfont($font, $t);
+
+ 	if (!$this_user_with_underscore) {
+
+		$this_user_with_underscore = replace_space_with_underscore($this_user);
+
+	}
+
+ 	list( $fword, $lword) = split('_', $this_user_with_underscore);
+
+ 	$return_code = substr($fword, 0, 3) . "-" . substr($lword, 0, 3);
+
+ 	$p->show("($return_code)");
+
+ 	unset($t);
+
+ 	unset($return_code);
+
+
+
+	$p->set_text_pos($start_x+300, $texty-14);
+
+	$p->setfont($font, $basic_font_size);
+
+ 	$p->show("$participant_name");
+
+	$p->set_text_pos($start_x+300, $texty-25);
+
+ 	$p->show("$participant_address");
+
+	$p->set_text_pos($start_x+300, $texty-36);
+
+ 	$p->show("$participant_citystatezip");
+
+ 	$p->end_page_ext("");
+
+
+
+ 	$env_height = (842*4.25)/11;
+
+	$env_width = (595*9)/8.5;
+
+ 	$p->begin_page_ext( $env_width, $env_height, "");
+
+	$start_x = 30;
+
+ 	$texty = 150;
+
+ 	// put in sender's code
+
+ 	$p->set_text_pos(45, 230);
+
+ 	$t = $basic_font_size - 2;
+
+ 	$p->setfont($font, $t);
+
+ 	if (!$this_user_with_underscore) {
+
+		$this_user_with_underscore = replace_space_with_underscore($this_user);
+
+	}
+
+ 	list( $fword, $lword) = split('_', $this_user_with_underscore);
+
+ 	$return_code = substr($fword, 0, 3) . "-" . substr($lword, 0, 3);
+
+ 	$p->show("($return_code)");
+
+ 	unset($t);
+
+ 	unset($return_code);
+
+
+
+	$p->set_text_pos($start_x+300, $texty-14);
+
+	$p->setfont($font, $basic_font_size);
+
+ 	$p->show("$provider_name");
+
+	$p->set_text_pos($start_x+300, $texty-25);
+
+ 	$p->show("$provider_address");
+
+	$p->set_text_pos($start_x+300, $texty-36);
+
+ 	$p->show("$provider_citystatezip");
+
+ 	$p->end_page_ext("");
+
+
+
+
+
+    $p->end_document("");
+
+
+
+	$len = strlen($buf);
+
+
+
+    $p->delete();
+
+
+
+	} //end of try
+
+catch (PDFlibException $e) {
+
+    die("PDFlib exception occurred in the Pending Letter:\n" .
+
+	"[" . $e->get_errnum() . "] " . $e->get_apiname() . ": " .
+
+	$e->get_errmsg() . "\n");
+
+	}
+
+catch (Exception $e) {
+
+    die($e);
+
+	}
+
+
+
+}  //end function write to disk
+
+
+
+if ( ($choice <> "print") OR (!$choice) ) {
+
+
+
+show_form($familyid, $caseid, $myUser, $dev_or_prod);
+
+
+
+} // end choice not print
+
+
+
+function show_form($familyid, $caseid, $myUser, $dev_or_prod)
+
+{
+
+
+
+$familyid = $familyid;
+
+$caseid = $caseid;
+
+$this_user_with_underscore = $myUser->fname . "_" . $myUser->lname;
+
+$str_myuser = $myUser->convertToString();
+
+
+
+$system_title = "S...";
+
+$this_program = "parent_letter";
+
+
+
+include ('../Client.class.php');
+
+include ('../Action.class.php');
+
+
+
+$this_user = $myUser->fname . " " . $myUser->lname;
+
+include ('../utConnection.inc.php');  // creates $con variable for mysqli_  syntax
+
+
+
+$query = "SELECT * FROM clients WHERE familyid = $familyid AND caseid = $caseid LIMIT 1";
+
+
+
+$result = mysqlI_query($con, $query) or die ("can't do $query " . mysql_error($con) );
+
+while ($row = mysqli_fetch_object($result)) {
+
+	$participant_name = $row->fname . " " . $row->lname ;
+
+		if ($row->mailing_address) {
+
+			$participant_address = $row->mailing_address;
+
+			$participant_citystatezip = ucwords(strtolower(ltrim(rtrim($row->mailing_city)))) . ", " . $row->mailing_state . "  " . $row->mailing_zip;
+
+		}
+
+		else {
+
+			$participant_address = $row->address;
+
+			$participant_citystatezip = ucwords(strtolower(ltrim(rtrim($row->city)))) . ", " . $row->state . "  " . $row->zip;
+
+		}
+
+	}
+
+
+
+$query = "SELECT date_format(now(), '%m/%d/%Y')";
+
+$result = mysqli_query($con, $query) or die ("cant do $query " . mysql_error($con) );
+
+while ($row = mysqli_fetch_array($result)) {
+
+	$letter_dt =$row[0];
+
+	}
+
+
+
+write_banner($dev_or_prod);
+
+
+
+echo <<<textcounter
+
+<SCRIPT LANGUAGE="JavaScript">
+
+function textCounter(field,cntfield,maxlimit) {
+
+if (field.value.length > maxlimit) // if too long...trim it!
+
+field.value = field.value.substring(0, maxlimit);
+
+// otherwise, update 'characters left' counter
+
+else
+
+cntfield.value = maxlimit - field.value.length;
+
+}
+
+//  End -->
+
+</script>
+
+textcounter;
+
+
+
+echo <<<parent_orientation_letter_form_a
+
+<div style=margin-left:200px;margin-right:200px;background-color:#white;font-size: .75em;>
+
+<form name="parent_orientation_certificate_letter" action="parent_orientation_certificate_letter.php" method="post">
+
+<div class="clearfix">
+
+Use letterhead stationery?: <input type=radio name=letterheadChoice value=Y > Y
+
+<input type=radio name=letterheadChoice value=N checked> N
+
+</div>
+
+<br>
+
+<br>
+
+<div class="clearfix">
+
+</div>
+
+<br>
+
+<div class="clearfix">
+
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title 
+
+</div>
+
+<div class="clearfix">
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title2
+
+</div>
+
+<div class="clearfix">
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*********************************
+
+</div>
+
+<br>
+
+<div class="clearfix">
+
+Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="textfield" size="50" maximum="12" name="participant_name"
+
+	 value="$participant_name"><br>
+
+Address:&nbsp;&nbsp;<input type="textfield" size="50" maximum="30" name="participant_address"
+
+	 value="$participant_address"><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="textfield" size="50" maximum="40" name="participant_citystatezip"
+
+	 value="$participant_citystatezip">
+
+<br>Family ID:<input type="textfield" size="30" maximum="30" name="familyid"
+
+	 value="$familyid">
+
+</div>
+
+<br>
+
+<div class="clearfix">
+
+By signing,  Agency on____<input type=textfield size=10 maximum=10
+
+					name=when_dt id=when_dt_id value="">
+
+					<script language=JavaScript>
+
+					new tcal ({ 'controlname': 'when_dt_id' });
+
+					</script>____
+
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><b>(Date)</b></small>
+
+</div>
+
+<div class="clearfix">
+
+I received ... Process.</b>
+
+</div>
+
+<br>
+
+<div class="clearfix">
+
+I also received included<br> with my packet.
+
+</div>
+
+<br>
+
+<div class="clearfix">
+
+Parent/Applicant Name: ___________________________________________________
+
+</div>
+
+<br>
+
+<div class="clearfix">
+
+Parent/Applicant Signature: ________________________________________________
+
+</div>
+
+<br>
+
+<div class="clearfix">
+
+Date: _________________________________________
+
+</div>
+
+<br>
+
+<br>
+
+<div class="clearfix">
+
+<input type="hidden" name="familyid" value=$familyid>
+
+<input type="hidden" name="caseid" value=$caseid>
+
+<input type="hidden" name="str_myuser" value=$str_myuser>
+
+<input type="submit" name="parent_choice" value = "Print" />
+
+<input type="submit" name="parent_choice" value = "Reset" />
+
+<input type="submit" name="parent_hoice" value = "Previous" />
+
+</div>
+
+<br><br>
+
+</form>
+
+</div>
+
+parent_orientation_letter_form_a;
+
+} // end function show form
+
+
+
+function write_to_count_table ($document_name, $reason, $familyid, $caseid, $stmt, $mysqli)
+
+{
+
+if (!$stmt) { trigger_error("Invalid prepare in write to count table function", E_USER_ERROR); }
+
+else
+
+	{ $stmt->bind_param('ssss', $reason, $familyid, $caseid, $document_name);
+
+	$stmt->execute();
+
+}
+
+return;
+
+} // end function write to count table
+
+
+
+
+
+?>
