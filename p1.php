@@ -11,3 +11,7 @@ $yearFounded = '2015';
     <?php echo $airpupTag; ?> (founded <?php echo $yearFounded; ?>)
 </h2>
 
+<!––
+Sample Run:
+I love music (founded 2015)
+––> 
