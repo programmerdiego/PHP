@@ -1,6 +1,6 @@
- <!––
+<!––
 Program Name: P1 
-Description:  Practice PHP inside HTML
+Description:  Practice set function and echo inside HTML.
 Author:       Diego Sanchez
  ––> 
 <?php
