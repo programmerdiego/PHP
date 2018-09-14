@@ -18,3 +18,14 @@
         <h1>Echo Random Number: <?php echo $pupCount; ?></h1>
         <!-- ... -->
 </div>
+
+      <!--
+      Sample: Run:
+      
+    Original Message: Diego Sanchez is the best!
+    Upper Case Message: DIEGO SANCHEZ IS THE BEST!
+    Lower Case Message: diego sanchez is the best!
+    Reversed: !tseb eht si zehcnaS ogeiD
+    Echo Random Number: 67
+      
+       -->
